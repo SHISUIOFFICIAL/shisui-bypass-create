@@ -11,11 +11,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const fontSize = 16
   const columns = canvas.width / fontSize
 
-  // Array to store the y-position of each column
+  // Array to store the y-position of each column for matrix rain
   const drops = []
   for (let i = 0; i < columns; i++) {
     drops[i] = 1 // Start at the top
   }
+
+  // Array to store circle properties
+  const circles = []
+  const maxCircles = 10 // Number of circles to animate concurrently
 
   // Function to draw the matrix rain
   function drawMatrix() {
@@ -41,29 +45,46 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Function to draw subtle circles (optional, can be removed if not desired)
+  // Function to draw and animate circles
   function drawCircles() {
-    ctx.strokeStyle = "rgba(0, 255, 0, 0.1)" // Faint green circles
-    ctx.lineWidth = 1
+    // Add new circles if below max
+    if (circles.length < maxCircles && Math.random() < 0.05) {
+      // Randomly add new circles
+      circles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        radius: Math.random() * 50 + 20, // Random radius between 20 and 70
+        alpha: 0.5, // Initial opacity
+        speed: Math.random() * 0.5 + 0.1, // Speed of fading
+        lineWidth: Math.random() * 2 + 0.5, // Line width
+      })
+    }
 
-    for (let i = 0; i < 5; i++) {
-      // Draw a few circles
-      const radius = Math.random() * 100 + 50
-      const x = Math.random() * canvas.width
-      const y = Math.random() * canvas.height
-      const startAngle = Math.random() * Math.PI * 2
-      const endAngle = startAngle + Math.random() * Math.PI * 1.5
+    // Update and draw existing circles
+    for (let i = 0; i < circles.length; i++) {
+      const circle = circles[i]
+      ctx.strokeStyle = `rgba(0, 255, 0, ${circle.alpha})` // Faint green circles
+      ctx.lineWidth = circle.lineWidth
 
       ctx.beginPath()
-      ctx.arc(x, y, radius, startAngle, endAngle)
+      ctx.arc(circle.x, circle.y, circle.radius, 0, Math.PI * 2)
       ctx.stroke()
+
+      circle.alpha -= 0.005 // Fade out
+      circle.radius += circle.speed // Grow
+
+      // Remove faded circles
+      if (circle.alpha <= 0) {
+        circles.splice(i, 1)
+        i--
+      }
     }
   }
 
   // Animation loop
   function animate() {
     drawMatrix()
-    // drawCircles(); // Uncomment if you want the circles
+    drawCircles() // Call the circle drawing function
     requestAnimationFrame(animate)
   }
 
@@ -79,5 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let i = 0; i < newColumns; i++) {
       drops[i] = 1
     }
+    circles.length = 0 // Clear circles on resize
   })
 })
